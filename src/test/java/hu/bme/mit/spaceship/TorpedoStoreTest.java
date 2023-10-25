@@ -1,20 +1,50 @@
 package hu.bme.mit.spaceship;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TorpedoStoreTest {
 
-  @Test
-  void fire_Success(){
-    // Arrange
-    TorpedoStore store = new TorpedoStore(1);
+    private TorpedoStore store;
 
-    // Act
-    boolean result = store.fire(1);
+    @BeforeEach
+    public void init() {
+        this.store = new TorpedoStore(0);
+    }
 
-    // Assert
-    assertEquals(true, result);
-  }
+    @Test
+    void fire_Success() {
+        // Arrange
+        store = new TorpedoStore(1);
+
+        // Act
+        boolean result = store.fire(1);
+        int quantity = store.getTorpedoCount();
+
+        // Assert
+        assertTrue(result);
+        assertEquals(0,quantity);
+    }
+
+    @Test
+    void empty_Fail() {
+        // Arrange
+        store = new TorpedoStore(0);
+        boolean result;
+
+        try {
+            // Act
+            result = !store.fire(1);
+        } catch (IllegalArgumentException e){
+            result = true;
+        } catch (Exception e){
+            result = false;
+        }
+
+        // Assert
+        assertTrue(result);
+    }
+
 }
